@@ -1,0 +1,52 @@
+{
+  "name": "01-pathshala",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@headlessui/react": "^2.1.2",
+    "@heroicons/react": "^1.0.6",
+    "@mui/icons-material": "^5.16.4",
+    "@mui/material": "^5.16.4",
+    "@reduxjs/toolkit": "^2.2.6",
+    "axios": "^1.7.2",
+    "bcrypt": "^5.1.1",
+    "chart.js": "^4.4.3",
+    "cloudinary": "^2.4.0",
+    "cropperjs": "^1.6.2",
+    "framer-motion": "^11.3.5",
+    "heroicons": "^2.1.5",
+    "jsonwebtoken": "^9.0.2",
+    "mime": "^4.0.4",
+    "moment": "^2.30.1",
+    "mongoose": "^8.5.1",
+    "next": "14.2.3",
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-cropper": "^2.3.3",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^5.2.1",
+    "react-modal-image": "^2.6.0",
+    "react-redux": "^9.1.2",
+    "react-spinners": "^0.14.1",
+    "react-table": "^7.8.0",
+    "react-tsparticles": "^2.12.2",
+    "react-webcam": "^7.2.0",
+    "start": "^5.1.0",
+    "tsparticles": "^3.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}
