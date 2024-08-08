@@ -98,7 +98,7 @@ const UserTable = ({ data }) => {
       try {
         await navigator.share({
           title: "Check out Test Link!",
-          text: `\n\n◉ Test No. ${data.length} \n◉ Total Question(s) : ${Quiz.questions.length} \n◉ Date : ${formattedDate} \n \n \n◉ Your MCQ Test link is Here.\n \n 👇👇👇👇👇 \n \n \n`,
+          text: `\n\n◉ Test No. ${data.length} \n◉ Total Question(s) : ${Quiz.questions.length} \n◉ Date : ${formattedDate} \n \n◉ Your MCQ Test link is Here.\n \n 👇👇👇👇👇 \n \n`,
           url: linkWeb + Quiz._id, // Shares the current page URL
         });
         toast.success("Link shared successfully");
