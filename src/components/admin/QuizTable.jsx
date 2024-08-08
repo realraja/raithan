@@ -265,8 +265,8 @@ const UserTable = ({ data }) => {
               ))}
             </thead>
             <tbody {...getTableBodyProps()} className="">
-              {page.map((row) => {
-                prepareRow(row,i);
+              {page.map((row,i) => {
+                prepareRow(row);
                 return (
                   <tr key={i} {...row.getRowProps()} className="even:bg-gray-800/70 hover:bg-gray-800">
                     {row.cells.map((cell,j) => (
