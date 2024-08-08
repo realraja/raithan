@@ -224,10 +224,11 @@ const UserTable = ({ data }) => {
             className="table-auto w-full border-collapse border border-gray-400"
           >
             <thead className="bg-gray-700">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
+              {headerGroups.map((headerGroup,i) => (
+                <tr key={i} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column,j) => (
                     <th
+                    key={j}
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       className={`px-4 py-2 border border-gray-600 text-left cursor-pointer text-sm text-gray-50 ${
                         column.className || ""
@@ -265,11 +266,11 @@ const UserTable = ({ data }) => {
             </thead>
             <tbody {...getTableBodyProps()} className="">
               {page.map((row) => {
-                prepareRow(row);
+                prepareRow(row,i);
                 return (
-                  <tr {...row.getRowProps()} className="even:bg-gray-800/70 hover:bg-gray-800">
-                    {row.cells.map((cell) => (
-                      <td
+                  <tr key={i} {...row.getRowProps()} className="even:bg-gray-800/70 hover:bg-gray-800">
+                    {row.cells.map((cell,j) => (
+                      <td key={j}
                         {...cell.getCellProps()}
                         onClick={()=> cell.column.Header !== 'Name' && cell.column.Header !== 'Icon' && cell.column.Header !== '#' && cell.column.Header !== 'Created' || router.push(`quizes/${row.original._id}`)}
                         className={`${cell.column.Header !== 'Name' && cell.column.Header !== 'Icon' && cell.column.Header !== '#' && cell.column.Header !== 'Created' || 'cursor-pointer text-blue-200'} border border-gray-600 px-4 py-2 text-sm ${cell.column.className || ""

@@ -3,7 +3,7 @@ import NotVerifiedPage from '@/components/Basics/NotVerified'
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-const page = () => {
+const Page = () => {
     const {user} = useSelector(state => state.user)
 
     if(!user.verified) return <NotVerifiedPage />
@@ -14,4 +14,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

@@ -313,10 +313,10 @@ const TestemonialSection = () => {
           className="bg-white text-black p-8 rounded-lg shadow-lg"
         >
           <p className="mb-4">
-            "Raithan Classes has provided me with an in-depth
+            &quot;Raithan Classes has provided me with an in-depth
             understanding of agriculture that I could not have gotten
             anywhere else. The faculty is incredibly knowledgeable and
-            supportive."
+            supportive.&quot;
           </p>
           <p className="font-bold">- Student A</p>
         </motion.div>
@@ -327,9 +327,9 @@ const TestemonialSection = () => {
           className="bg-white text-black p-8 rounded-lg shadow-lg"
         >
           <p className="mb-4">
-            "The curriculum is well-structured and the teaching methods
+            &quot;The curriculum is well-structured and the teaching methods
             are very effective. I feel well-prepared for a career in
-            agriculture."
+            agriculture.&quot;
           </p>
           <p className="font-bold">- Student B</p>
         </motion.div>
@@ -340,9 +340,9 @@ const TestemonialSection = () => {
           className="bg-white text-black p-8 rounded-lg shadow-lg"
         >
           <p className="mb-4">
-            "The practical knowledge and hands-on experience I've gained
+            &quot;The practical knowledge and hands-on experience I&apos;ve gained
             here have been invaluable. I highly recommend Raithan Classes
-            to anyone interested in agriculture."
+            to anyone interested in agriculture.&quot;
           </p>
           <p className="font-bold">- Student C</p>
         </motion.div>

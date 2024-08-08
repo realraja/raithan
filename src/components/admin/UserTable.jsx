@@ -286,10 +286,11 @@ const UserTable = ({ data }) => {
             className="table-auto w-full border-collapse border border-gray-600"
           >
             <thead className="bg-gray-800">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
+              {headerGroups.map((headerGroup,i) => (
+                <tr key={i} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column,j) => (
                     <th
+                    key={j}
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       className={`px-4 py-2 border border-gray-600 text-left cursor-pointer text-sm text-gray-50 ${
                         column.className || ""
@@ -326,12 +327,12 @@ const UserTable = ({ data }) => {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {page.map((row) => {
+              {page.map((row,i) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()} className="border border-gray-600">
-                    {row.cells.map((cell) => (
-                      <td
+                  <tr key={i} {...row.getRowProps()} className="border border-gray-600">
+                    {row.cells.map((cell,j) => (
+                      <td key={j}
                         {...cell.getCellProps()}
                         className={`px-4 text-center py-2 border border-gray-600 text-sm text-gray-50 ${
                           cell.column.className || ""
