@@ -46,10 +46,10 @@ const AddStudent = ({ confirmState, setConfirmState, runFunction }) => {
         courses
       });
 
-      toast.success(data.message);
       setConfirmState(false);
       await dispatch(checkAdmin());
       setLoading(false);
+      toast.success(data.message);
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);

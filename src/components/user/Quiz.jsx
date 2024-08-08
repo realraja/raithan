@@ -8,7 +8,7 @@ const questionss = [
   // Your questions array
 ];
 
-export default function Quiz({ questions = questionss, name, quizId, userId }) {
+export default function Quiz({ questions = questionss, name, quizId, userId ,isReattempt}) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState(
     new Array(questions.length).fill(null)
@@ -30,9 +30,17 @@ export default function Quiz({ questions = questionss, name, quizId, userId }) {
   }, [currentQuestion]);
 
   const handleNext = () => {
+
+
+    if(selectedOptions[currentQuestion] === null) {
+      const newSelections = [...selectedOptions];
+      newSelections[currentQuestion] = 4;
+      setSelectedOptions(newSelections);
+    }
+
     const selectedOptionKey = Object.keys(questions[currentQuestion].options)[selectedOptions[currentQuestion]];
 
-    UpdateQuestion({ questionId: questions[currentQuestion]._id, option: selectedOptionKey });
+    UpdateQuestion({ questionId: questions[currentQuestion]._id, option: selectedOptionKey || 'e' });
 
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
@@ -52,7 +60,7 @@ export default function Quiz({ questions = questionss, name, quizId, userId }) {
   }, [timeLeft]);
 
   useEffect(() => {
-    const newSelections = [...selectedOptions];
+   if(!isReattempt){ const newSelections = [...selectedOptions];
     questions.forEach((i, j) => {
       const userAnswer = i.users.find(user => user.id === userId)?.choosed;
       if (userAnswer) {
@@ -83,7 +91,7 @@ export default function Quiz({ questions = questionss, name, quizId, userId }) {
             break;
         }
       }
-    });
+    });}
   }, []);
 
   const handleOptionSelect = (index) => {
@@ -142,7 +150,7 @@ export default function Quiz({ questions = questionss, name, quizId, userId }) {
         <div>
           <p className="text-3xl">{name}</p>
           <p className="text-gray-300 font-light">
-            {questions.length} Questions
+          {currentQuestion + 1}/{questions.length} Questions
           </p>
         </div>
       </div>
@@ -166,20 +174,17 @@ export default function Quiz({ questions = questionss, name, quizId, userId }) {
     </div>
 
     <div className="py-14 px-4 sm:px-20">
-      <div className="flex items-center gap-5">
-        <div className="bg-purple-600 w-14 h-14 rounded-lg flex justify-center items-center">
-          <p className="text-4xl font-mono">{currentQuestion + 1}</p>
-        </div>
-        {!questions[currentQuestion].questionUrl?<p className="font-mono text-lg w-full sm:w-[80%]">
-          {questions[currentQuestion].question}
-        </p>:<div className="w-[80%]">
+      <div className="flex justify-center items-center bg-gray-900 max-sm:mx-3 px-2 py-1 rounded-md">
+        {!questions[currentQuestion].questionUrl?<p className="font-mono text-lg w-full sm:w-[90%]">
+          {currentQuestion + 1}. {questions[currentQuestion].question}
+        </p>:
         <ModalImage
+        className="max-h-64 w-full object-contain"
             small={questions[currentQuestion].questionUrl}
             large={questions[currentQuestion].questionUrl} // Replace with your actual image URL
             alt="question Image"
           />
-          {/* <img src={questions[currentQuestion].questionUrl} alt="question image" /> */}
-          </div>}
+          }
       </div>
 
       <div className={`flex ${questions[currentQuestion].questionUrl || 'flex-col'} flex-wrap justify-evenly gap-5 pt-8 px-4 sm:px-10 text-xl`}>
@@ -218,7 +223,6 @@ export default function Quiz({ questions = questionss, name, quizId, userId }) {
         </button>
         <button
           onClick={handleNext}
-          disabled={selectedOptions[currentQuestion] === null}
           className="flex justify-center items-center gap-3 bg-purple-700 text-xl px-5 py-2 lg:px-8 lg:py-3 rounded-xl disabled:opacity-50"
         >
           {currentQuestion === questions.length - 1 ? (
@@ -253,7 +257,7 @@ const OptionDiv = ({ index, data, isSelected, onClick,isHidden }) => {
   return (
       <div
       onClick={onClick}
-        className={`${!isSelected?'border':'border-2'} flex items-center gap-3 cursor-pointer border-purple-600 w-full rounded-lg py-2 min-w-16 ${
+        className={`${!isSelected?'border':'border-2'} ${index===5 && 'hidden'} flex items-center gap-3 cursor-pointer border-purple-600 w-full rounded-lg py-2 min-w-16 ${
          ''
         } ${isHidden && "hidden"}`}
       >
@@ -275,9 +279,9 @@ const Result = ({ score, totalQuestions, correctAnswers, incorrectAnswers, notAt
 </div>
         <h1 className="text-4xl font-bold mb-2">Your Score</h1>
         <h2 className="text-2xl mb-4">{score}/{totalQuestions}</h2>
-        <Link href={'/'}>
+        <Link href={'/start-quiz'}>
           <button className="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-500 mb-4">
-            Go Home
+            Go Back
           </button>
         </Link>
         <div className="text-lg">

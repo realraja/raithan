@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { useTable, useSortBy, usePagination } from "react-table";
 import {
   FiChevronDown,
@@ -25,6 +25,22 @@ const UserTable = ({ data }) => {
   const [showPasswordDialog, setShowPasswordDialog] = useState(false);
   const [editStudentDialog, setEditStudentDialog] = useState(false);
   
+  const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, studentId: null });
+  const contextMenuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (contextMenuRef.current && !contextMenuRef.current.contains(event.target)) {
+        setContextMenu({ ...contextMenu, visible: false });
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [contextMenu]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,16 +58,16 @@ const UserTable = ({ data }) => {
     setFilteredData(filtered);
   };
 
-  const handleEditStudent = adminTryCatch(async(allData)=>{
-    const {data} = await axios.get(`/api/admin/student?user=${allData._id}`);
-    if(data.success) {
-        setPassword(data.data.password);
-        setStudentData(allData);
-        setEditStudentDialog(true);
-    }else{
-        toast.error(data.message);
+  const handleEditStudent = adminTryCatch(async (allData) => {
+    const { data } = await axios.get(`/api/admin/student?user=${allData._id}`);
+    if (data.success) {
+      setPassword(data.data.password);
+      setStudentData(allData);
+      setEditStudentDialog(true);
+    } else {
+      toast.error(data.message);
     }
-  })
+  });
 
   const handleShowPassword = adminTryCatch(async (id) => {
     const response = await axios.get(`/api/admin/student?user=${id}`);
@@ -72,14 +88,31 @@ const UserTable = ({ data }) => {
     }
   });
 
-  const ReturnRight =(detail)=>{ 
-    let right =  detail.questions.reduce((accumulator, i) => {
-      const users = i.users.find(u=>u.id === detail._id);
-      return users.result === 'Right'  ? accumulator + 1 : accumulator;
-    },0)
+  const handleContextMenu = (e, studentId) => {
+    e.preventDefault();
+    setContextMenu({
+      visible: true,
+      x: e.clientX,
+      y: e.clientY,
+      studentId,
+    });
+  };
+
+  const handleCloseContextMenu = () => {
+    setContextMenu({ visible: false, x: 0, y: 0, studentId: null });
+  };
+
+
+
+  const ReturnRight = (detail) => {
+    let right = detail.questions.reduce((accumulator, i) => {
+      const users = i.users.find(u => u.id === detail._id);
+      return users.result === 'Right' ? accumulator + 1 : accumulator;
+    }, 0)
     return right;
   }
-  const ReturnScore =(detail)=>{ 
+
+  const ReturnScore = (detail) => {
     let totalScore = detail.quizes.reduce((accumulator, quiz) => {
       const userScore = quiz.usersDone.find(u => u.id === detail._id);
       return userScore ? accumulator + userScore.score : accumulator;
@@ -130,14 +163,14 @@ const UserTable = ({ data }) => {
       },
       {
         Header: "Score",
-        accessor: (row)=> ReturnScore(row),
+        accessor: (row) => ReturnScore(row),
         Cell: ({ cell: { value } }) => value,
         className: "max-sm:hidden sm:table-cell",
       },
       {
         Header: "Questions",
         accessor: (row) => row,
-        Cell: ({ cell: { value } }) => ReturnRight(value)+'/'+value.questions.length,
+        Cell: ({ cell: { value } }) => ReturnRight(value) + '/' + value.questions.length,
         sortType: (rowA, rowB) => {
           return rowA.original.questions.length - rowB.original.questions.length;
         },
@@ -148,7 +181,12 @@ const UserTable = ({ data }) => {
         accessor: (row) => row,
         Cell: ({ cell: { value } }) =>
           value.verified ? (
-            <span onContextMenu={(e) => {e.preventDefault(); handleVerifyStudent(value._id);}}>Yes</span>
+            <span
+              onContextMenu={(e) => handleContextMenu(e, value._id)}
+              className="cursor-pointer"
+            >
+              Yes
+            </span>
           ) : (
             <button
               onClick={() => handleVerifyStudent(value._id)}
@@ -157,6 +195,9 @@ const UserTable = ({ data }) => {
               Verify
             </button>
           ),
+          sortType: (rowA, rowB) => {
+            return rowA.original.verified - rowB.original.verified;
+          },
       },
       {
         Header: "Password",
@@ -228,16 +269,15 @@ const UserTable = ({ data }) => {
     <>
       <div className="container mx-auto py-4 px-2">
         <div className="flex gap-2 items-center mb-4 w-full">
-
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-  <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clipRule="evenodd" />
-</svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+            <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clipRule="evenodd" />
+          </svg>
           <input
             type="text"
             placeholder="Search by name or phone"
             value={searchInput}
             onChange={handleSearch}
-            className="px-2 py-1 max-sm:pr-20 max-sm:w-max max-sm:mx-2 border bg-gray-700 border-gray-300 focus:outline-none rounded-md"
+            className="px-2 py-1 max-sm:pr-20 max-sm:w-max max-sm:mx-2 border bg-gray-700/50 border-gray-300 focus:outline-none rounded-md"
           />
         </div>
         <div className="overflow-x-auto">
@@ -346,7 +386,7 @@ const UserTable = ({ data }) => {
             onChange={(e) => setPageSize(Number(e.target.value))}
             className="ml-2 p-2 bg-gray-700 text-gray-50 rounded"
           >
-            {[5, 10, 20].map((pageSize) => (
+            {[3,5,8, 10, 20].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 Show {pageSize}
               </option>
@@ -369,6 +409,11 @@ const UserTable = ({ data }) => {
           studentPassword={password}
         />
       )}
+      {contextMenu.visible && (
+      <div ref={contextMenuRef} style={{ position: "absolute", top: contextMenu.y, left: contextMenu.x }}>
+        <button className="px-4 py-2 bg-rose-700 hover:bg-rose-700/90 rounded " onClick={() => handleVerifyStudent(contextMenu.studentId)}>Unverify</button>
+      </div>
+    )}
     </>
   );
 };

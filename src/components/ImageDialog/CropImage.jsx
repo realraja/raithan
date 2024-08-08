@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { Cropper } from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 
-export default function CropperDialog({ imageSrc, onCrop, onClose, isOpen }) {
+export default function CropperDialog({ ratio,imageSrc, onCrop, onClose, isOpen }) {
   const cropperRef = useRef(null);
 
   const handleCrop = () => {
@@ -39,10 +39,11 @@ export default function CropperDialog({ imageSrc, onCrop, onClose, isOpen }) {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className=" transform overflow-hidden rounded-2xl bg-gray-900 p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className=" transform overflow-hidden rounded-2xl w-[90vw] h-[80vh] bg-gray-900 p-6 text-left align-middle shadow-xl transition-all">
                 <Cropper
+                aspectRatio={ratio}
                   src={imageSrc}
-                  style={{ height: '75vh', width: '90%' }}
+                  style={{ width: '95%',height: '60vh' }}
                   initialAspectRatio={1}
                   guides={false}
                   ref={cropperRef}

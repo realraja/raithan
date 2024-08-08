@@ -18,9 +18,7 @@
     }
   }
   
-  body {
-    background-color: black;
-  }
+ 
   
   body::-webkit-scrollbar {
     width: 5px;

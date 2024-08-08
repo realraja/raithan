@@ -22,12 +22,8 @@ const Page = () => {
   if (!mounted) return null;
 
   return (
-    // <div className="dark:bg-gray-800 min-h-screen flex items-center justify-center">
-    //   <TableComponent />
-    // </div>
-    <>
-      <div className="flex flex-col items-center">
-        <AddButton
+    <div className="flex flex-col items-center justify-center max-sm:w-screen sm:py-5">
+       <AddButton
           icon={
             <path
               strokeLinecap="round"
@@ -38,21 +34,41 @@ const Page = () => {
           runFunction={() => setConfirmShowAdd(true)}
           text={"Add Quizes"}
         />
-
-        <div className="w-full flex flex-wrap justify-center gap-5 p-4 my-4 cursor-pointer">
-          {quizes && quizes.map((i,v)=>(
-            <CoursesCard key={v} id={i._id} name={i.name} subjects={i.forSubject.length} questions={i.questions.length} courses={i.forCourse.length} date={i.createdAt}  />
-          ))}
-
-          </div>
-
-      </div>
+      {quizes && <TableComponent data={[...quizes].reverse()} />}
 
       <AddQuiz
         confirmState={confirmShowAdd}
         setConfirmState={setConfirmShowAdd}
       />
-    </>
+    </div>
+    // <>
+    //   <div className="flex flex-col items-center">
+    //     <AddButton
+    //       icon={
+    //         <path
+    //           strokeLinecap="round"
+    //           strokeLinejoin="round"
+    //           d="M12 4.5v15m7.5-7.5h-15"
+    //         />
+    //       }
+    //       runFunction={() => setConfirmShowAdd(true)}
+    //       text={"Add Quizes"}
+    //     />
+
+    //     <div className="w-full flex flex-wrap justify-center gap-5 p-4 my-4 cursor-pointer">
+    //       {quizes && quizes.map((i,v)=>(
+    //         <CoursesCard key={v} id={i._id} name={i.name} subjects={i.forSubject.length} questions={i.questions.length} courses={i.forCourse.length} date={i.createdAt}  />
+    //       ))}
+
+    //       </div>
+
+    //   </div>
+
+    //   <AddQuiz
+    //     confirmState={confirmShowAdd}
+    //     setConfirmState={setConfirmShowAdd}
+    //   />
+    // </>
   );
 };
 

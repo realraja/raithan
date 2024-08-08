@@ -11,7 +11,7 @@ const EditStudent = ({ confirmState, setConfirmState, studentData ,studentPasswo
     const [phone, setPhone] = useState(studentData.phone);
     const [password, setPassword] = useState(studentPassword);
     const [loading, setLoading] = useState(false);
-    const [courses, setCourses] = useState(studentData.courses);
+    const [courses, setCourses] = useState([]);
     
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     
@@ -59,7 +59,7 @@ const EditStudent = ({ confirmState, setConfirmState, studentData ,studentPasswo
     }
   };
 
-  if(courses.length === 0) coursesData && setCourses([coursesData[0]?._id])
+  if(courses.length === 0) coursesData && setCourses(studentData.courses)
 
 
   return (

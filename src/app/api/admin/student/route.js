@@ -61,6 +61,16 @@ export const PUT = adminTryCatch(async (req) => {
   await user.save();
 
 
+  const courseUpdate = courses.map(async (i) => {
+    const course = await Course.findById(i);
+    if (!course) return ResponseFailed(401, "this course not found", i);
+
+    course.subscribers = course.subscribers.filter(s=> s.toString() !== userId.toString());
+    await course.subscribers.push(userId);
+    await course.save();
+  });
+
+await Promise.all(courseUpdate);
   return ResponseSuccess(200, "user Updated successfully", user);
 });
 export const GET = adminTryCatch(async (req) => {

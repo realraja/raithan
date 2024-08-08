@@ -1,8 +1,6 @@
 "use client"
-import { checkUser } from '@/redux/actions/userActions';
 import { loginAction } from '@/redux/slices/userSlice';
 import { LoginUser } from '@/utils/UserActions';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -113,8 +111,8 @@ const LoginPage = () => {
 
         <p className="mt-10 text-center text-sm text-gray-400">
           Not a User?{' '}
-          <Link href="/admin-login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-            Admin Login
+          <Link href="/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+            Register
           </Link>
         </p>
       </div>

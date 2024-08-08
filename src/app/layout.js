@@ -18,9 +18,11 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <StoreProvider>
           <div className="min-h-[100vh] text-white  z-[-2] bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]">
-            <StartUp>             
             <Toaster toastOptions={{ duration: 4000 }} />
+            <StartUp>        
+              <div className="max-sm:pb-14">    
             {children}
+            </div> 
             </StartUp>
           </div>
         </StoreProvider>

@@ -24,7 +24,7 @@ const Navbar = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isAdmin } = useSelector((state) => state.admin);
-  const { loading, isUser } = useSelector((state) => state.user);
+  const { loading, isUser ,user} = useSelector((state) => state.user);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -67,8 +67,9 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-gray-800 w-full sticky top-0 z-50 ${
+      className={`bg-gray-900 border-b border-gray-700 w-full sticky top-0 z-50 ${
         (pathname.split("/")[2] !== "login" &&
+        pathname.split("/")[1] !== "register" &&
           pathname.split("/")[1] !== "admin-login" &&
           pathname.split("/")[1] !== "forget-password" &&
           // pathname.split("/")[1] !== "start-quiz" &&
@@ -91,11 +92,26 @@ const Navbar = () => {
               <span className="text-3xl sm:block font-serif font-extralight">
                 Raithan Classes
               </span>
+
+{/* <div className="max-sm:hidden flex justify-center items-center gap-4">
+              <div className={`px-3 py-2 rounded-md ${pathname === '/' ? 'bg-gray-950': 'hover:bg-gray-800'}  mx-3`}>
+                <p className={`${pathname === '/' && 'text-purple-500'}`}>Home</p>
+              </div>
+              <div className={`px-3 py-2 rounded-md ${pathname === '/' ? 'bg-gray-950': 'hover:bg-gray-800'}  mx-3`}>
+                <p className={`${pathname === '/' && 'text-purple-500'}`}>Study</p>
+              </div>
+              <div className={`px-3 py-2 rounded-md ${pathname === '/' ? 'bg-gray-950': 'hover:bg-gray-800'}  mx-3`}>
+                <p className={`${pathname === '/' && 'text-purple-500'}`}></p>
+              </div>
+
+</div> */}
             </div>
+
+          
           </div>
           {loading ? (
             <BeatLoader color="#b03acf" margin={4} speedMultiplier={3} />
-          ) :isUser? (
+          ) : isUser ? (
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               <button
                 onClick={() => router.push("/01-test-image")}
@@ -115,7 +131,7 @@ const Navbar = () => {
                     <span className="sr-only">Open user menu</span>
                     <img
                       className="h-8 w-8 rounded-full"
-                      src="https://res.cloudinary.com/dwc3gwskl/image/upload/v1721379013/samples/ecommerce/fiiijyy4cq1nrcp7t4zz.jpg"
+                      src={user.avatar}
                       alt="user"
                     />
                   </Menu.Button>
@@ -133,7 +149,31 @@ const Navbar = () => {
                     <Menu.Item>
                       {({ active }) => (
                         <Link
-                          href="#"
+                          href="/"
+                          className={`${
+                            active ? "bg-gray-100" : ""
+                          } block px-4 py-2 text-sm text-gray-700`}
+                        >
+                          Home
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          href="/study"
+                          className={`${
+                            active ? "bg-gray-100" : ""
+                          } block px-4 py-2 text-sm text-gray-700`}
+                        >
+                          Study
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          href="/profile"
                           className={`${
                             active ? "bg-gray-100" : ""
                           } block px-4 py-2 text-sm text-gray-700`}
@@ -172,10 +212,26 @@ const Navbar = () => {
                 </Transition>
               </Menu>
             </div>
-          ): <Link href={'/'} className="text-purple-500 flex justify-center items-center gap-2">Login<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-          <path fillRule="evenodd" d="M16.72 7.72a.75.75 0 0 1 1.06 0l3.75 3.75a.75.75 0 0 1 0 1.06l-3.75 3.75a.75.75 0 1 1-1.06-1.06l2.47-2.47H3a.75.75 0 0 1 0-1.5h16.19l-2.47-2.47a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
-        </svg>
-        </Link>}
+          ) : (
+            <Link
+              href={"/login"}
+              className="text-purple-500 flex justify-center items-center gap-2"
+            >
+              Login
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-6"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.72 7.72a.75.75 0 0 1 1.06 0l3.75 3.75a.75.75 0 0 1 0 1.06l-3.75 3.75a.75.75 0 1 1-1.06-1.06l2.47-2.47H3a.75.75 0 0 1 0-1.5h16.19l-2.47-2.47a.75.75 0 0 1 0-1.06Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </Link>
+          )}
         </div>
       </div>
 

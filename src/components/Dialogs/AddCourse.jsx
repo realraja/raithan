@@ -17,10 +17,10 @@ export default function AddCourse({ confirmState, setConfirmState, runFunction, 
     try {
         const {data} = await axios.post('/api/admin/course',{name});
         console.log(data);
-        toast.success(data.message);
         setLoading(false);
         await dispatch(checkAdmin());
         setConfirmState(false);
+        toast.success(data.message);
     } catch (error) {
         toast.error(error.response.data.message);
         setLoading(false);

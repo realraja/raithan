@@ -37,9 +37,9 @@ const AddQuestion = ({ isOpen, setIsOpen, quiz }) => {
       // console.log(data);
 
       await dispatch(checkAdmin());
-      toast.success(data.message);
       setIsOpen(false);
       setLoading(false);
+      toast.success(data.message);
     } catch (error) {
       console.log(error);
       error.response

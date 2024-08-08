@@ -16,7 +16,7 @@ export const POST = adminTryCatch(async (req) => {
 
   if(questionUrl){
     const uploadResponse = await cloudinary.uploader.upload(questionUrl, {
-      folder: 'raithan'
+      folder: 'raithan' 
     });
 
     const data = await Question.create({ questionUrl:uploadResponse.secure_url, answer, for:[quiz] ,timer});   

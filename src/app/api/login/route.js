@@ -14,7 +14,7 @@ export const POST = async(req)=>{
     try {
         await connectDB();
 
-        const user = await User.findOne({phone}).select('+password');
+        const user = await User.findOne({phone}).select('+password').populate('courses');
         
         if(!user) return ResponseFailed(401,'invalid phone no. or password',user);
 

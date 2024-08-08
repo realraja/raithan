@@ -6,9 +6,9 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkAdmin } from '@/redux/actions/adminActions';
 
-export default function AddQuiz({ confirmState, setConfirmState, runFunction, buttonText = 'Create' }) {
+export default function UpdateQuiz({ confirmState, setConfirmState, buttonText = 'Update',quizData }) {
   const cancelButtonRef = useRef(null);
-  const [name, setName] = useState('');
+  const [name, setName] = useState(quizData.name);
   const [loading, setLoading] = useState(false);
   const [courses, setCourses] = useState([]);
   const [subjects, setSubjects] = useState([]);
@@ -43,14 +43,14 @@ export default function AddQuiz({ confirmState, setConfirmState, runFunction, bu
      }
    };
    useEffect(() => {
-   coursesData && setCourses([coursesData[0]._id]);
-   subjectsData && setSubjects([subjectsData[0]._id]);
+   coursesData && setCourses(quizData.forCourse);
+   subjectsData && setSubjects(quizData.forSubject);
    }, [coursesData, subjectsData])
 
   const handleSubmit = async()=>{
     setLoading(true);
     try {
-        const {data} = await axios.post('/api/admin/quiz',{name,courses,subject:subjects});
+        const {data} = await axios.put('/api/admin/quiz',{name,courses,subject:subjects,id:quizData._id});
         // console.log(data);
         setLoading(false);
         await dispatch(checkAdmin());
@@ -98,7 +98,7 @@ export default function AddQuiz({ confirmState, setConfirmState, runFunction, bu
 </svg>
 
 
-                        New Quiz
+                        Update Quiz
                       </Dialog.Title>
                       <div className="m-3 text-sm text-white flex justify-center items-center z-20">
                         <div className="relative inline-block text-left w-56">

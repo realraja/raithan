@@ -14,6 +14,10 @@ export const CheckUser = userTryCatch(async()=>{
     const {data} = await axios.get(`/api/user/check-user`);
     return data;
 })
+export const RegisterUser = userTryCatch(async(userData)=>{
+    const {data} = await axios.post('/api/register',userData);
+    return data;
+})
 export const LoginUser = userTryCatch(async(userData)=>{
     const {data} = await axios.post('/api/login',userData);
     return data;
