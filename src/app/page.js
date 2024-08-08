@@ -2,8 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { FiFacebook, FiInstagram, FiYoutube } from "react-icons/fi";
-import { WhatsApp } from "@mui/icons-material";
 
 const HomePage = () => {
   return (

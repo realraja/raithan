@@ -6,6 +6,8 @@ import {
   FiArrowLeft,
   FiArrowRight,
   FiEdit,
+  FiShare2,
+  FiCopy,
 } from "react-icons/fi";
 import { adminTryCatch } from "@/utils/AdminActions";
 import axios from "axios";
@@ -16,7 +18,9 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import UpdateQuiz from "../Dialogs/EditQuiz";
 
+
 const UserTable = ({ data }) => {
+  const linkWeb = window.location.href.split('raithan-add')[0] + 'start-quiz/';
     const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
   const [filteredData, setFilteredData] = useState(data);
@@ -79,6 +83,22 @@ const UserTable = ({ data }) => {
     });
   };
 
+  const handleShare = async (id) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Check out this link!',
+          text: 'Here is a cool link I want to share with you.',
+          url: linkWeb+id, // Shares the current page URL
+        });
+        toast.success('Link shared successfully');
+      } catch (error) {
+        toast.error('Error sharing the link', error);
+      }
+    } else {
+      alert('Web Share API is not supported in your browser.');
+    }
+  };
   const columns = useMemo(
     () => [
       {
@@ -167,6 +187,25 @@ const UserTable = ({ data }) => {
           >
             <FiEdit />
           </button>
+        ),
+      },
+      {
+        Header: "Share",
+        accessor: (row) => row,
+        Cell: ({ cell: { value } }) => (
+          <div className="flex gap-4">
+          <button
+            onClick={() => {navigator.clipboard.writeText(`${linkWeb+value._id}`); toast.success("coppied successfully")}}
+            className="px-2 py-1 text-2xl bg-blue-500 text-white rounded-lg"
+          >
+            <FiCopy />
+          </button>
+          <button
+            onClick={() => {handleShare(value._id); }}
+            className="px-2 py-1 text-2xl bg-blue-500 text-white rounded-lg"
+          >
+            <FiShare2 />
+          </button></div>
         ),
       },
     ],
