@@ -87,8 +87,8 @@ const UserTable = ({ data }) => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Check out this link!',
-          text: 'Here is a cool link I want to share with you.',
+          title: 'Check out Test Link!',
+          text: 'Your MCQ Test link is Here 👇👇👇👇👇 \n.',
           url: linkWeb+id, // Shares the current page URL
         });
         toast.success('Link shared successfully');
