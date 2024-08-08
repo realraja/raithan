@@ -83,13 +83,20 @@ const UserTable = ({ data }) => {
     });
   };
 
-  const handleShare = async (id) => {
+  const handleShare = async (Quiz) => {
+    let date =  new Date(Quiz.updatedAt);
+    const year = date.getFullYear();
+const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() is zero-based
+const day = String(date.getDate()).padStart(2, '0');
+
+const formattedDate = `${day}-${month}-${year}`;
+    // console.log(formattedDate);
     if (navigator.share) {
       try {
         await navigator.share({
           title: 'Check out Test Link!',
-          text: 'Your MCQ Test link is Here 👇👇👇👇👇 \n.',
-          url: linkWeb+id, // Shares the current page URL
+          text: `◉ Test No. ${data.length} \n◉ Total Question : ${Quiz.questions.length} \n◉ Date : ${formattedDate} \n Your MCQ Test link is Here.\n 👇👇👇👇👇 \n`,
+          url: linkWeb+Quiz._id, // Shares the current page URL
         });
         toast.success('Link shared successfully');
       } catch (error) {
@@ -201,7 +208,7 @@ const UserTable = ({ data }) => {
             <FiCopy />
           </button>
           <button
-            onClick={() => {handleShare(value._id); }}
+            onClick={() => {handleShare(value); }}
             className="px-2 py-1 text-2xl bg-blue-500 text-white rounded-lg"
           >
             <FiShare2 />
