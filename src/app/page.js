@@ -1,9 +1,15 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { userTryCatch } from "@/utils/UserActions";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const HomePage = () => {
+  const router = useRouter();
   return (
     <div className="min-h-screen flex flex-col text-white ">
       <header className="pt-8">
@@ -38,7 +44,7 @@ const HomePage = () => {
               curriculum and experienced faculty.
             </motion.p>
             <motion.a
-              href="/study"
+              onClick={()=> router.push('/study')}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1 }}
@@ -350,6 +356,19 @@ const TestemonialSection = () => {
   );
 };
 const ContactUsSection = () => {
+  const {isUser} = useSelector(state => state.user);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+
+  const handleSubmitMessage = userTryCatch(async(e)=>{
+    e.preventDefault();
+    const {data} = await axios.post('/api/user/notification',{name,email,message});
+    toast.success(data.message);
+    setMessage('');
+  })
+
   return (
     <section id="contact" className="bg-green-600 text-black py-20">
       <div className="container mx-auto text-center">
@@ -367,23 +386,32 @@ const ContactUsSection = () => {
         >
           Email Us
         </motion.a>
-        <form className="mt-8 flex justify-center items-center flex-col">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-centers">
+        <form className="mt-8 flex justify-center items-center flex-col" onSubmit={handleSubmitMessage}>
+          {isUser || <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-centers">
             <input
               type="text"
+              value={name}
+              onChange={(e)=> setName(e.target.value)}
               placeholder="Your Name"
               className="p-3 rounded-lg focus:outline-none w-full max-sm:w-[90%]"
+              required
             />
             <input
               type="email"
+              value={email}
+              onChange={(e)=> setEmail(e.target.value)}
               placeholder="Your Email"
               className="p-3 rounded-lg focus:outline-none w-full max-sm:w-[90%]"
+              required
             />
-          </div>
+          </div>}
           <textarea
             placeholder="Your Message"
+              value={message}
+              onChange={(e)=> setMessage(e.target.value)}
             className="p-3 mt-4 rounded-lg focus:outline-none w-full max-sm:w-[90%]"
             rows="4"
+            required
           ></textarea>
           <motion.button
             type="submit"

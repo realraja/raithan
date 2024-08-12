@@ -7,6 +7,9 @@ import ModalImage from "react-modal-image";
 import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { userTryCatch } from "@/utils/UserActions";
+import moment from "moment";
+import { ClipLoader } from "react-spinners";
 
 const Page = ({ params }) => {
   const quizId = params.id;
@@ -14,33 +17,43 @@ const Page = ({ params }) => {
 
   const [quiz, setQuiz] = useState(null);
   const [isReattempt, setIsReattempt] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // console.log('quizId:', quizId);
     // console.log('quizes:', quizes);
 
-    const GetQuizesData = async() =>{
+    const GetQuizesData = async () => {
       try {
-        const {data} = await axios.get(`/api/user/quiz?id=${quizId}`);
+        const { data } = await axios.get(`/api/user/quiz?id=${quizId}`);
         setQuiz(data.data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
         toast.error(error.message);
+        setLoading(false);
       }
-    }
+    };
 
     if (quizes) {
       const foundQuiz = quizes.find((i) => i._id === quizId);
       // console.log('foundQuiz:', foundQuiz);
       setQuiz(foundQuiz);
+      setLoading(false);
       // console.log(foundQuiz)
-    }else{
-      GetQuizesData()
+    } else {
+      GetQuizesData();
     }
   }, [quizId, quizes]);
 
   if (!quiz || quiz?.questions.length < 1) {
-    return <Notfound />;
+    return loading ? (
+      <div className="w-full p-5 flex justify-center items-center">
+        <ClipLoader color="#9f33c7" size={100} />{" "}
+      </div>
+    ) : (
+      <Notfound />
+    );
   }
 
   if (quiz.usersDone.find((i) => i.id === user._id) && !isReattempt) {
@@ -56,6 +69,7 @@ const Page = ({ params }) => {
             userId={user._id}
             score={quiz.usersDone.find((u) => u.id === user._id)?.score}
             setIsReAttempt={setIsReattempt}
+            quizId={quizId}
           />
         </>
       )
@@ -79,7 +93,14 @@ const Page = ({ params }) => {
 
 export default Page;
 
-const QuizDone = ({ name, questions, userId, score, setIsReAttempt }) => {
+const QuizDone = ({
+  name,
+  questions,
+  userId,
+  score,
+  setIsReAttempt,
+  quizId,
+}) => {
   // console.log(questions[0].users.find(u => u.id === userId)?.choosed,questions[0].options.a,Object.keys(questions[0].options)[4])
   const [isResultAnswer, setIsResultAnswer] = useState(false);
   return (
@@ -123,6 +144,7 @@ const QuizDone = ({ name, questions, userId, score, setIsReAttempt }) => {
           setIsReAttempt={setIsReAttempt}
           totalQuestions={questions.length}
           setIsResultAnswer={setIsResultAnswer}
+          quizId={quizId}
         />
       )}
     </div>
@@ -166,6 +188,7 @@ const Result = ({
   totalQuestions,
   setIsResultAnswer,
   setIsReAttempt,
+  quizId,
 }) => {
   return (
     <div className=" text-white flex flex-col items-center justify-center px-4">
@@ -234,6 +257,7 @@ const Result = ({
           Show Results
         </button>
       </div>
+      <QuizComment quizId={quizId} />
     </div>
   );
 };
@@ -291,50 +315,141 @@ const ResultAnswers = ({ questions, userId, setIsResultAnswer }) => {
       {questions.map((question, index) => {
         const result = question.users.find((u) => u.id === userId)?.result;
         // console.log(result);
-        if(result === activeTab){
-        return (
-          <div key={index} className="py-10 px-4 sm:px-20">
-            <div className="flex justify-center items-center bg-gray-900 max-sm:mx-3 px-2 py-1 rounded-md gap-2">
-            <p>{index + 1}.</p> {!questions[index].questionUrl?<p className="font-mono text-lg w-full sm:w-[90%]">
-          {questions[index].question}
-        </p>:
-        <ModalImage
-        className="max-h-64 w-full object-contain"
-            small={questions[index].questionUrl}
-            large={questions[index].questionUrl} // Replace with your actual image URL
-            alt="question Image"
-          />
-          }
-      </div>
-
-            <div
-              className={`flex ${
-                question.questionUrl || "flex-col"
-              } flex-wrap justify-evenly gap-5 pt-8 px-4 sm:px-10 text-xl`}
-            >
-              {Object.values(question.options).map((option, i) => {
-                // console.log(Object.keys(option))
-                return (
-                  <OptionDiv
-                    key={i}
-                    data={option}
-                    index={i + 1}
-                    isSelected={
-                      question.users.find((u) => u.id === userId)?.choosed ===
-                      Object.keys(questions[0].options)[i]
-                    }
-                    isRight={
-                      question.answer === Object.keys(questions[0].options)[i]
-                    }
-                    isNotAttemp={"e" === Object.keys(questions[0].options)[i]}
+        if (result === activeTab) {
+          return (
+            <div key={index} className="py-10 px-4 sm:px-20">
+              <div className="flex justify-center items-center bg-gray-900 max-sm:mx-3 px-2 py-1 rounded-md gap-2">
+                <p>{index + 1}.</p>{" "}
+                {!questions[index].questionUrl ? (
+                  <p className="font-mono text-lg w-full sm:w-[90%]">
+                    {questions[index].question}
+                  </p>
+                ) : (
+                  <ModalImage
+                    className="max-h-64 w-full object-contain"
+                    small={questions[index].questionUrl}
+                    large={questions[index].questionUrl} // Replace with your actual image URL
+                    alt="question Image"
                   />
-                );
-              })}
+                )}
+              </div>
+
+              <div
+                className={`flex ${
+                  question.questionUrl || "flex-col"
+                } flex-wrap justify-evenly gap-5 pt-8 px-4 sm:px-10 text-xl`}
+              >
+                {Object.values(question.options).map((option, i) => {
+                  // console.log(Object.keys(option))
+                  return (
+                    <OptionDiv
+                      key={i}
+                      data={option}
+                      index={i + 1}
+                      isSelected={
+                        question.users.find((u) => u.id === userId)?.choosed ===
+                        Object.keys(questions[0].options)[i]
+                      }
+                      isRight={
+                        question.answer === Object.keys(questions[0].options)[i]
+                      }
+                      isNotAttemp={"e" === Object.keys(questions[0].options)[i]}
+                    />
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        );
-      }
+          );
+        }
       })}
+    </div>
+  );
+};
+
+const QuizComment = ({ quizId }) => {
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState("");
+  const [commentData, setCommentData] = useState([]);
+
+  const getComments = userTryCatch(async () => {
+    const { data } = await axios.get(`/api/user/quiz/comment?id=${quizId}`);
+    setCommentData(data.data);
+    setLoading(false);
+  });
+
+  const handleSubmitComment = userTryCatch(async (e) => {
+    e.preventDefault();
+    const { data } = await axios.post("/api/user/quiz/comment", {
+      quizId,
+      message,
+    });
+    toast.success(data.message);
+    setMessage("");
+    getComments();
+  });
+
+  useEffect(() => {
+    getComments();
+  }, []);
+
+  return (
+    <div className="w-full my-10">
+      <p className="text-2xl font-sans border-b">Comments</p>
+      <form
+        className=" flex justify-center items-center flex-col"
+        onSubmit={handleSubmitComment}
+      >
+        <textarea
+          placeholder="Your Comment"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="p-3 mt-4 rounded-lg focus:outline-none w-full bg-gray-800"
+          rows="2"
+          required
+        ></textarea>
+        <button
+          type="submit"
+          className="bg-green-600 self-start text-white px-6 py-3 mt-4 rounded-lg font-semibold hover:bg-green-700 transition"
+        >
+          Submit
+        </button>
+      </form>
+
+      {loading ? (
+        <div className="w-full p-5 flex justify-center items-center">
+          <ClipLoader color="#46e53c" size={100} />{" "}
+        </div>
+      ) : (
+        <div>
+          {commentData &&
+            [...commentData].reverse().map((i, j) => (
+              <div
+                key={j}
+                className="flex items-center gap-4 border rounded-md px-4 py-2 my-5"
+              >
+                <ModalImage
+                  className="h-12 w-12 rounded-full object-cover"
+                  small={i.user.avatar}
+                  large={i.user.avatar} // Replace with your actual image URL
+                  alt="question Image"
+                />
+                <div className="w-[90%]">
+                  <div className="w-full flex justify-between items-center">
+                    <p className="text-lg font-bold">
+                      {i.user.name[0].toUpperCase() + i.user.name.slice(1)}
+                    </p>
+                    <p className="text-xs font-extralight text-gray-300">
+                      {moment(i.updatedAt).fromNow()}
+                    </p>
+                  </div>
+                  <p className="text-gray-200 font-extralight font-sans">
+                    {i.message}
+                  </p>
+                </div>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 };

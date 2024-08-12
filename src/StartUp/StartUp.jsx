@@ -3,7 +3,7 @@ import Layout from "@/components/admin/Layout";
 import Footer from "@/components/user/Footer";
 import Navbar from "@/components/user/Navbar";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React from "react"; 
 import { useSelector } from "react-redux";
 import { GridLoader } from "react-spinners";
 

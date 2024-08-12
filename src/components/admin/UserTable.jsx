@@ -107,7 +107,7 @@ const UserTable = ({ data }) => {
   const ReturnRight = (detail) => {
     let right = detail.questions.reduce((accumulator, i) => {
       const users = i.users.find(u => u.id === detail._id);
-      return users.result === 'Right' ? accumulator + 1 : accumulator;
+      return users?.result === 'Right' ? accumulator + 1 : accumulator;
     }, 0)
     return right;
   }
@@ -280,7 +280,7 @@ const UserTable = ({ data }) => {
             className="px-2 py-1 max-sm:pr-20 max-sm:w-max max-sm:mx-2 border bg-gray-700/50 border-gray-300 focus:outline-none rounded-md"
           />
         </div>
-        <div className="overflow-x-auto">
+        <div className=" overflow-x-auto">
           <table
             {...getTableProps()}
             className="table-auto w-full border-collapse border border-gray-600"

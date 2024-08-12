@@ -7,7 +7,7 @@ export const adminTryCatch = (passedFunction) => async(data) => {
         return await passedFunction(data);
     } catch (error) {
         console.log(error,error.message);
-        return {success:false,message:error.response.data.message ?error.response.data.message:error.message};
+        return {success:false,message:error.response?.data.message ?error.response.data.message:error.message};
     }
 }
 

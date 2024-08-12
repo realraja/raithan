@@ -34,7 +34,7 @@ const Sidebar = () => {
         <Link href="/raithan-add/courses" className="flex items-center p-4 hover:bg-purple-800">
           <BookOpenIcon className="h-6 w-6 mr-2 sm:hidden md:block" /> Courses
         </Link>
-        <Link href="/raithan-add/settings" className="flex items-center p-4 hover:bg-purple-800">
+        <Link href="/raithan-add/notification" className="flex items-center p-4 hover:bg-purple-800">
           <CogIcon className="h-6 w-6 mr-2 sm:hidden md:block" /> Settings
         </Link>
       </nav>
