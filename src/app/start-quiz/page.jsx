@@ -8,11 +8,13 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import { ClipLoader } from "react-spinners";
 
 export default function Home() {
   const dispatch = useDispatch();
   const { quizes, user } = useSelector((state) => state.user);
   const [selectedCourse, setSelectedCourse] = useState({});
+  const [loading, setLoading] = useState(true);
   // console.log(user);
 
   // const getQuizes = async()=>{
@@ -29,13 +31,15 @@ export default function Home() {
 
   useEffect(() => {
     const GetSetQuiz = async () => {
+      setLoading(true);
       const data = await GetQuizesData({
         courseId: selectedCourse._id || user?.courses[0]._id,
       });
-      console.log(data);
+      // console.log(data);
       if (data.success) {
         dispatch(getUserQuiz(data.data));
         // toast.success(data.message);
+        setLoading(false);
       } else {
         toast.error(data.message);
       }
@@ -56,7 +60,11 @@ export default function Home() {
       <div className="container mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">My Quizzes</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {quizes &&
+          {loading ? (
+      <div className="w-full p-5 flex justify-center items-center">
+        <ClipLoader color="#9f33c7" size={100} />{" "}
+      </div>
+    ) :quizes &&
             [...quizes]
               .reverse()
               .map((i) => <QuizCard key={i._id} quiz={i} user={user} />)}
