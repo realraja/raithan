@@ -56,7 +56,7 @@ const Page = ({ params }) => {
     );
   }
 
-  if (quiz.usersDone.find((i) => i.id === user._id) && !isReattempt) {
+  if (quiz?.usersDone?.find((i) => i?.id === user?._id) && !isReattempt) {
     // console.log(quiz.usersDone.find(i => i.id === user._id))
     // console.log(quiz.usersDone)
     return (

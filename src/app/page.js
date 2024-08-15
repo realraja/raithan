@@ -162,7 +162,7 @@ const HomePage = () => {
 
 export default HomePage;
 
-const SocialMediaSection = () => {
+export const SocialMediaSection = () => {
   return (
     <section id="social-media" className="py-20">
       <div className="container mx-auto text-center">
