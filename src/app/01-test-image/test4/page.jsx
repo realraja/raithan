@@ -1,8 +1,11 @@
 "use client"
+import axios from 'axios';
 import { useState } from 'react';
 
 export default function CameraPage() {
   const [imageSrc, setImageSrc] = useState(null);
+  const [uploadUrl, setUploadUrl] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const handleCapture = (event) => {
     const file = event.target.files[0];
@@ -12,6 +15,19 @@ export default function CameraPage() {
         setImageSrc(e.target.result);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadImage = async () => {
+    setUploading(true);
+    try {
+      const {data} = await axios.post('/api/upload', { image: imageSrc });
+      setUploadUrl(data.url);
+      console.log(data);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -32,11 +48,28 @@ export default function CameraPage() {
       >
         Open Camera
       </label>
-      {imageSrc && (
+      {/* {imageSrc && (
         <div className="mt-4">
           <img src={imageSrc} alt="Captured" className="rounded shadow-lg" />
         </div>
-      )}
+      )} */}
+
+{imageSrc && (
+          <>
+            <h2>Captured Image:</h2>
+            <img src={imageSrc} alt="Captured" />
+            <button onClick={uploadImage} disabled={uploading}>
+              {uploading ? 'Uploading...' : 'Upload Image'}
+            </button>
+            {uploadUrl && (
+              <>
+                <h2>Uploaded Image:</h2>
+                <img src={uploadUrl} alt="Uploaded" />
+                <p>{uploadUrl}</p>
+              </>
+            )}
+          </>
+        )}
     </div>
   );
-}
+} 

@@ -48,7 +48,7 @@ const HomePage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1 }}
-              className="bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition"
+              className="bg-green-500 cursor-pointer text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition"
             >
               Start Now
             </motion.a>
