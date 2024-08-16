@@ -65,7 +65,7 @@ export default function ChangeName({ confirmState, setConfirmState, runFunction,
                     onClick={handleSubmit}
                   >
                     <div className="flex justify-center items-center"> 
-                        buttonText
+                        {buttonText}
                     
                     </div>
                   </button>

@@ -197,7 +197,9 @@ const ProfileData = ({ user }) => {
   const handleUpdate = async() =>{
     try {
       const {data} = await axios.put('/api/user/profile',{avatar,name});
+      console.log(data);
       await dispatch(loginAction(data.data));
+      setAvatar(data.data.avatar);
       toast.success(data.message);
     } catch (error) {
       toast.error(error.message);
