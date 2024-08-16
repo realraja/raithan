@@ -1,7 +1,7 @@
 export const StudyImages = [
-  "https://res.cloudinary.com/dwc3gwskl/image/upload/v1723104822/raithan/xywpbfnsqx0roamizjki.jpg",
-  "https://res.cloudinary.com/dwc3gwskl/image/upload/v1723104538/raithan/tiixb8tkvpoutkpyd5pl.jpg",
-  "https://res.cloudinary.com/dwc3gwskl/image/upload/v1723104822/raithan/xywpbfnsqx0roamizjki.jpg",
+  "https://res.cloudinary.com/dwc3gwskl/image/upload/v1723781572/raithan/tknqxpdi21hq7tnym2rc.jpg",
+  "https://res.cloudinary.com/dwc3gwskl/image/upload/v1723781713/raithan/rsaur6gupx5cwfdsm5sp.jpg",
+  "https://res.cloudinary.com/dwc3gwskl/image/upload/v1723781713/raithan/rsaur6gupx5cwfdsm5sp.jpg",
 ];
 
 export const StudyCards = [

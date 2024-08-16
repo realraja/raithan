@@ -21,6 +21,7 @@
     "chart.js": "^4.4.3",
     "cloudinary": "^2.4.0",
     "cropperjs": "^1.6.2",
+    "flowbite-react": "^0.10.1",
     "framer-motion": "^11.3.21",
     "gsap": "^3.12.5",
     "heroicons": "^2.1.5",

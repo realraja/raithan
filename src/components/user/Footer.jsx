@@ -23,7 +23,7 @@ const Footer = () => {
           </div>
         </Link>
         <Link href={"/study"} className="text-center">
-          <div  className={pathName.split('/')[1] === 'start-quiz' && 'text-green-400'}>
+          <div  className={pathName.split('/')[1] === 'study' && 'text-green-400'}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"

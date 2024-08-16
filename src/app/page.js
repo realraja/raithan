@@ -50,7 +50,7 @@ const HomePage = () => {
               transition={{ duration: 1, delay: 1 }}
               className="bg-green-500 cursor-pointer text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition"
             >
-              Start Now
+              Start Now 
             </motion.a>
           </div>
         </section>

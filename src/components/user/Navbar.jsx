@@ -24,7 +24,7 @@ const Navbar = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isAdmin } = useSelector((state) => state.admin);
-  const { loading, isUser ,user} = useSelector((state) => state.user);
+  const { loading, isUser, user } = useSelector((state) => state.user);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -69,7 +69,7 @@ const Navbar = () => {
     <nav
       className={`bg-gray-900 border-b border-gray-700 w-full sticky top-0 z-50 ${
         (pathname.split("/")[2] !== "login" &&
-        pathname.split("/")[1] !== "register" &&
+          pathname.split("/")[1] !== "register" &&
           pathname.split("/")[1] !== "admin-login" &&
           pathname.split("/")[1] !== "forget-password" &&
           // pathname.split("/")[1] !== "start-quiz" &&
@@ -92,22 +92,39 @@ const Navbar = () => {
               <span className="text-3xl sm:block font-serif font-extralight">
                 Raithan Classes
               </span>
-
-{/* <div className="max-sm:hidden flex justify-center items-center gap-4">
-              <div className={`px-3 py-2 rounded-md ${pathname === '/' ? 'bg-gray-950': 'hover:bg-gray-800'}  mx-3`}>
-                <p className={`${pathname === '/' && 'text-purple-500'}`}>Home</p>
-              </div>
-              <div className={`px-3 py-2 rounded-md ${pathname === '/' ? 'bg-gray-950': 'hover:bg-gray-800'}  mx-3`}>
-                <p className={`${pathname === '/' && 'text-purple-500'}`}>Study</p>
-              </div>
-              <div className={`px-3 py-2 rounded-md ${pathname === '/' ? 'bg-gray-950': 'hover:bg-gray-800'}  mx-3`}>
-                <p className={`${pathname === '/' && 'text-purple-500'}`}></p>
-              </div>
-
-</div> */}
             </div>
-
-          
+            <div className="max-sm:hidden flex justify-center items-center gap-3 ml-5">
+              <Link
+                href={"/"}
+                className={`px-5 py-2 rounded-md ${
+                  pathname === "/"
+                    ? "bg-gray-950  text-purple-300"
+                    : "hover:bg-gray-800"
+                }`}
+              >
+                <p>Home</p>
+              </Link>
+              <Link
+                href={"/study"}
+                className={`px-5 py-2 rounded-md ${
+                  pathname.split("/")[1] === "study"
+                    ? "bg-gray-950  text-purple-300"
+                    : "hover:bg-gray-800"
+                }`}
+              >
+                <p>Study</p>
+              </Link>
+              <Link
+                href={"/profile"}
+                className={`px-5 py-2 rounded-md ${
+                  pathname.split("/")[1] === "profile"
+                    ? "bg-gray-950  text-purple-300"
+                    : "hover:bg-gray-800"
+                }`}
+              >
+                <p>Profile</p>
+              </Link>
+            </div>
           </div>
           {loading ? (
             <BeatLoader color="#b03acf" margin={4} speedMultiplier={3} />

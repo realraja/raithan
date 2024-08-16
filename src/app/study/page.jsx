@@ -30,7 +30,7 @@ export default function Home() {
         <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
           {StudyImages.map((src, index) => (
             <div key={index} className="min-w-full">
-              <img src={src} alt={`Slide ${index}`} width={1920} height={1080} className="h-[50vh] object-cover" />
+              <img src={src} alt={`Slide ${index}`}  className=" h-56 sm:h-64 xl:h-80 2xl:h-96 w-full object-cover" />
             </div>
           ))}
         </div>
@@ -51,6 +51,21 @@ export default function Home() {
 
       {/* Course Details */}
       <SocialMediaSection />
+    </div>
+  );
+}
+
+
+
+function ImageSlider() {
+  return (
+    <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
+      <Carousel slideInterval={1000}>
+      {StudyImages.map((src, index) => (
+              <img src={src} alt={`Slide ${index}`}  className="h-full object-cover" />
+                  ))}
+        
+      </Carousel>
     </div>
   );
 }
