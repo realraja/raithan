@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { SocialMediaSection } from '../page'; // Assume this component is created
 import { StudyCards, StudyImages } from '@/utils/UserStudyPage';
 import Link from 'next/link';
+import { Carousel } from 'flowbite-react';
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -62,7 +63,7 @@ function ImageSlider() {
     <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
       <Carousel slideInterval={1000}>
       {StudyImages.map((src, index) => (
-              <img src={src} alt={`Slide ${index}`}  className="h-full object-cover" />
+              <img key={index} src={src} alt={`Slide ${index}`}  className="h-full object-cover" />
                   ))}
         
       </Carousel>
